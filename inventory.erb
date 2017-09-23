@@ -9,16 +9,16 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 containerized=true
 openshift_release=v1.5.0
 openshift_image_tag=v1.5.0
-openshift_public_hostname=console.techdope.io
-openshift_master_default_subdomain=apps.techdope.io
+openshift_public_hostname=legerity.schiznik.net
+openshift_master_default_subdomain=puggs.net
 openshift_hosted_metrics_deploy=true
 
 openshift_master_overwrite_named_certificates=true
-openshift_master_named_certificates=[{"certfile": "/etc/letsencrypt/live/console.techdope.io/cert.pem", "keyfile": "/etc/letsencrypt/live/console.techdope.io/privkey.pem", "cafile": "/etc/letsencrypt/live/console.techdope.io/fullchain.pem"}]
+openshift_master_named_certificates=[{"certfile": "/etc/letsencrypt/live/legerity.schiznik.net/cert.pem", "keyfile": "/etc/letsencrypt/live/legerity.schiznik.net/privkey.pem", "cafile": "/etc/letsencrypt/live/legerity.schiznik.net/fullchain.pem"}]
 
 
 [masters]
-console.techdope.io openshift_schedulable=true
+legerity.schiznik.net openshift_schedulable=true
 
 [nodes]
-console.techdope.io openshift_node_labels="{'region': 'infra', 'zone': 'default'}" openshift_schedulable=true
+legerity.schiznik.net openshift_node_labels="{'region': 'infra', 'zone': 'default'}" openshift_schedulable=true
