@@ -1,13 +1,34 @@
 #!/bin/bash
 
-for i in `seq 1 100`;
-do
-	DIRNAME="vol$i"
-	mkdir -p /mnt/data/$DIRNAME
-        chcon -Rt svirt_sandbox_file_t /mnt/data/$DIRNAME
+#define ZFS pool to host NFS exports
+ZPOOL=exports
+
+
+while IFS=$',' read -r project dataname size ; do
+
+	#create dataset - create parent manually before running this script
+	zfs create $ZPOOL/${project}/${dataname}
+	
+	#dirty haxx
+	chgrp -R 0 /$ZPOOL/${project}/${dataname}
+	chmod -R go+rwx /$ZPOOL/${project}/${dataname}
+
+	#set SELinux context
+	chcon -Rt svirt_sandbox_file_t /$ZPOOL/${project}/${dataname}
+
+	# Yawn....
 	sleep 5
-	sed -i "s/name: vol`expr $i - 1`/name: vol$i/g" vol.yaml
-	sed -i "s/path: \/mnt\/data\/vol`expr $i - 1`/path: \/mnt\/data\/vol$i/g" vol.yaml
+
+	#modify vol.yaml & oc create it
+	cp -Zf vol.yaml.default vol.yaml
+	sed -i "s/VOL_NAME/${dataname}/g" vol.yaml
+	sed -i "s/VOL_PATH/$ZPOOL\/${project}\/${dataname}/g" vol.yaml
+	sed -i "s/VOL_SIZE/${size}/g" vol.yaml
 	oc create -f vol.yaml
-	echo "created volume $i"
-done
+
+	#add to /etc/exports & refresh mount list
+	echo "/$ZPOOL/${project}/${dataname}	*(rw,sync,no_root_squash,no_all_squash)" >> /etc/exports
+	exportfs -rv
+
+	echo "created ${size}Gi volume ${dataname}"
+done < "oc-volume-list"
