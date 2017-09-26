@@ -13,4 +13,4 @@ spec:
     path: /VOL_PATH
   claimRef:
     name: VOL_NAME
-    namespace: default
+    namespace: VOL_PROJECT

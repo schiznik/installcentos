@@ -24,6 +24,7 @@ while IFS=$',' read -r project dataname size ; do
 	sed -i "s/VOL_NAME/${dataname}/g" vol.yaml
 	sed -i "s/VOL_PATH/$ZPOOL\/${project}\/${dataname}/g" vol.yaml
 	sed -i "s/VOL_SIZE/${size}/g" vol.yaml
+	sed -i "s/VOL_PROJECT/${project}/g" vol.yaml
 	oc create -f vol.yaml
 
 	#add to /etc/exports & refresh mount list
