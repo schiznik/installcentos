@@ -11,3 +11,6 @@ spec:
   persistentVolumeReclaimPolicy: Recycle
   hostPath:
     path: /VOL_PATH
+  claimRef:
+    name: VOL_NAME
+    namespace: default
