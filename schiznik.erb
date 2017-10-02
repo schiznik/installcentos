@@ -15,20 +15,21 @@ openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 
 openshift_master_cluster_hostname=legerity.puggs.net
 openshift_master_cluster_public_hostname=openshift-cluster.puggs.net
 openshift_master_default_subdomain=puggs.net
+
 os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+
 openshift_master_named_certificates=[{"certfile": "/etc/letsencrypt/live/openshift-cluster.puggs.net/fullchain.pem", "keyfile": "/etc/letsencrypt/live/openshift-cluster.puggs.net/privkey.pem", "names":["openshift-cluster.puggs.net"]}]
 openshift_master_overwrite_named_certificates=true
+
 openshift_node_iptables_sync_period=30s
 openshift_use_dnsmasq=True
+
 openshift_master_audit_config={"basicAuditEnabled": true}
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# Configure custom ca certificate
 openshift_master_ca_certificate={'certfile': '/etc/certificates/rootCA.crt', 'keyfile': '/etc/certificates/rootCA.key'}
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-
 
 openshift_hosted_manage_router=true
+
 openshift_logging_storage_kind=nfs
 openshift_logging_storage_access_modes=['ReadWriteOnce']
 openshift_logging_storage_nfs_directory=/exports
@@ -37,15 +38,15 @@ openshift_logging_storage_volume_name=logging
 openshift_logging_storage_volume_size=10Gi
 openshift_logging_storage_labels={'exports': 'logging'}
 
-#openshift_metrics_install_metrics=true
-#openshift_metrics_public_url=https://metrics.puggs.net/hawkular/metrics
-#openshift_metrics_storage_kind=nfs
-#openshift_metrics_storage_access_modes=['ReadWriteOnce']
-#openshift_metrics_storage_nfs_directory=/exports
-#openshift_metrics_storage_nfs_options='*(rw,root_squash)'
-#openshift_metrics_storage_volume_name=metrics
-#openshift_metrics_storage_volume_size=10Gi
-#openshift_metrics_storage_labels={'exports': 'metrics'}
+openshift_metrics_install_metrics=true
+openshift_metrics_public_url=https://metrics.puggs.net/hawkular/metrics
+openshift_metrics_storage_kind=nfs
+openshift_metrics_storage_access_modes=['ReadWriteOnce']
+openshift_metrics_storage_nfs_directory=/exports
+openshift_metrics_storage_nfs_options='*(rw,root_squash)'
+openshift_metrics_storage_volume_name=metrics
+openshift_metrics_storage_volume_size=10Gi
+openshift_metrics_storage_labels={'exports': 'metrics'}
 
 [masters]
 legerity.puggs.net:3000 ansible_hostname=legerity.puggs.net
