@@ -30,6 +30,7 @@ openshift_master_ca_certificate={'certfile': '/etc/certificates/rootCA.crt', 'ke
 
 openshift_hosted_manage_router=true
 
+openshift_logging_install_logging=true
 openshift_logging_storage_kind=nfs
 openshift_logging_storage_access_modes=['ReadWriteOnce']
 openshift_logging_storage_nfs_directory=/exports
@@ -39,6 +40,8 @@ openshift_logging_storage_volume_size=10Gi
 openshift_logging_storage_labels={'exports': 'logging'}
 
 openshift_metrics_install_metrics=true
+openshift_metrics_install_hawkular_agent=true
+openshift_metrics_hawkular_hostname=hawkular-metrics.puggs.net
 openshift_metrics_public_url=https://metrics.puggs.net/hawkular/metrics
 openshift_metrics_storage_kind=nfs
 openshift_metrics_storage_access_modes=['ReadWriteOnce']
