@@ -6,6 +6,7 @@ etcd
 [OSEv3:vars]
 openshift_enable_unsupported_configurations=true
 openshift_docker_insecure_registries=true
+openshift_disable_swap=false
 ansible_ssh_user=root
 debug_level=5
 deployment_type=origin
@@ -38,8 +39,12 @@ openshift_logging_storage_nfs_options='*(rw,root_squash)'
 openshift_logging_storage_volume_name=logging
 openshift_logging_storage_volume_size=10Gi
 openshift_logging_storage_labels={'exports': 'logging'}
+openshift_logging_es_pvc_size=10Gi
+openshift_logging_es_pvc_dynamic=false
+
 
 openshift_metrics_install_metrics=true
+openshift_metrics_start_cluster=true
 openshift_metrics_install_hawkular_agent=true
 openshift_metrics_hawkular_hostname=hawkular-metrics.puggs.net
 openshift_metrics_public_url=https://metrics.puggs.net/hawkular/metrics
