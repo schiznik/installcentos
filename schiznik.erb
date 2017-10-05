@@ -2,6 +2,7 @@
 masters
 nodes
 etcd
+nfs
 
 [OSEv3:vars]
 openshift_enable_unsupported_configurations=true
@@ -9,10 +10,18 @@ openshift_docker_insecure_registries=true
 openshift_disable_swap=false
 ansible_ssh_user=root
 debug_level=5
-deployment_type=origin
+openshift_deployment_type=origin
+openshift_release=v3.6
+openshift_image_tag=v3.6.0
+openshift_pkg_version=-3.6.0
 openshift_install_examples=true
 
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+# Defining htpasswd users
+#openshift_master_htpasswd_users={'user1': '<pre-hashed password>', 'user2': '<pre-hashed password>'}
+# or
+openshift_master_htpasswd_file=/root/openshift_htpasswd
+
 openshift_master_cluster_hostname=legerity.puggs.net
 openshift_master_cluster_public_hostname=openshift-cluster.puggs.net
 openshift_master_default_subdomain=puggs.net
@@ -23,13 +32,24 @@ openshift_master_named_certificates=[{"certfile": "/etc/letsencrypt/live/openshi
 openshift_master_overwrite_named_certificates=true
 
 openshift_node_iptables_sync_period=30s
-openshift_use_dnsmasq=True
+
+openshift_use_dnsmasq=true
 
 openshift_master_audit_config={"basicAuditEnabled": true}
 
 openshift_master_ca_certificate={'certfile': '/etc/certificates/rootCA.crt', 'keyfile': '/etc/certificates/rootCA.key'}
 
 openshift_hosted_manage_router=true
+
+openshift_hosted_manage_registry=true
+openshift_hosted_registry_storage_kind=nfs
+openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
+openshift_hosted_registry_storage_nfs_directory=/exports
+openshift_hosted_registry_storage_nfs_options='*(rw,root_squash)'
+openshift_hosted_registry_storage_volume_name=registry
+openshift_hosted_registry_storage_labels={'exports': 'registry'}
+openshift_hosted_registry_storage_volume_size=10Gi
+
 
 openshift_logging_install_logging=true
 openshift_logging_storage_kind=nfs
@@ -39,22 +59,25 @@ openshift_logging_storage_nfs_options='*(rw,root_squash)'
 openshift_logging_storage_volume_name=logging
 openshift_logging_storage_volume_size=10Gi
 openshift_logging_storage_labels={'exports': 'logging'}
+openshift_logging_elasticsearch_cluster_size=1
+openshift_logging_deployer_version=3.6.0
 openshift_logging_es_pvc_size=10Gi
 openshift_logging_es_pvc_dynamic=false
 
-
-openshift_metrics_install_metrics=true
-openshift_metrics_start_cluster=true
-openshift_metrics_install_hawkular_agent=true
-openshift_metrics_hawkular_hostname=hawkular-metrics.puggs.net
-openshift_metrics_public_url=https://metrics.puggs.net/hawkular/metrics
-openshift_metrics_storage_kind=nfs
-openshift_metrics_storage_access_modes=['ReadWriteOnce']
-openshift_metrics_storage_nfs_directory=/exports
-openshift_metrics_storage_nfs_options='*(rw,root_squash)'
-openshift_metrics_storage_volume_name=metrics
-openshift_metrics_storage_volume_size=10Gi
-openshift_metrics_storage_labels={'exports': 'metrics'}
+openshift_metrics_uninstall_metrics=true
+#openshift_metrics_install_metrics=true
+#openshift_metrics_start_cluster=true
+#openshift_metrics_image_version=v3.6.0
+#openshift_metrics_deployer_version=v3.6.0
+#openshift_metrics_hawkular_hostname=hawkular-metrics.puggs.net
+#openshift_metrics_public_url=https://metrics.puggs.net/hawkular/metrics
+#openshift_metrics_storage_kind=nfs
+#openshift_metrics_storage_access_modes=['ReadWriteOnce']
+#openshift_metrics_storage_nfs_directory=/exports
+#openshift_metrics_storage_nfs_options='*(rw,root_squash)'
+#openshift_metrics_storage_volume_name=metrics
+#openshift_metrics_storage_volume_size=10Gi
+#openshift_metrics_storage_labels={'exports': 'metrics'}
 
 [masters]
 legerity.puggs.net:3000 ansible_hostname=legerity.puggs.net
