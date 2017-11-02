@@ -3,6 +3,8 @@
 #define ZFS pool to host NFS exports
 ZPOOL=exports
 
+#define temporary vol.yaml
+VOLYAML=$(mktemp /tmp/vol.XXXXXXX.yaml)
 
 while IFS=$',' read -r project dataname size ; do
 
@@ -20,12 +22,12 @@ while IFS=$',' read -r project dataname size ; do
 	sleep 5
 
 	#modify vol.yaml & oc create it
-	cp -Zf vol.yaml.default vol.yaml
-	sed -i "s/VOL_NAME/${dataname}/g" vol.yaml
-	sed -i "s/VOL_PATH/$ZPOOL\/${project}\/${dataname}/g" vol.yaml
-	sed -i "s/VOL_SIZE/${size}/g" vol.yaml
-	sed -i "s/VOL_PROJECT/${project}/g" vol.yaml
-	oc create -f vol.yaml
+	cp -Zf vol.yaml.default $VOLYAML
+	sed -i "s/VOL_NAME/${dataname}/g" $VOLYAML 
+	sed -i "s/VOL_PATH/$ZPOOL\/${project}\/${dataname}/g" $VOLYAML
+	sed -i "s/VOL_SIZE/${size}/g" $VOLYAML
+	sed -i "s/VOL_PROJECT/${project}/g" $VOLYAML
+	oc create -f $VOLYAML
 
 	#add to /etc/exports & refresh mount list
 	echo "/$ZPOOL/${project}/${dataname}	*(rw,sync,no_root_squash,no_all_squash)" >> /etc/exports
